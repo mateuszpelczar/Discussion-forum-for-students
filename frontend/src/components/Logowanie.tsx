@@ -13,7 +13,7 @@ const Logowanie: React.FC = () => {
   const { logowanie } = useAuth();
   
   const [formData, setFormData] = useState<UzytkownikLogowanie>({
-    username: '',
+    email: '',
     password: '',
   });
   
@@ -63,12 +63,12 @@ const Logowanie: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="username">Nazwa użytkownika</label>
+            <label htmlFor="email">E-mail</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
               autoFocus

@@ -1,0 +1,387 @@
+/* Stylowanie panelu admina - spójne z resztą aplikacji (DRY) */
+
+.admin-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header */
+.admin-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-header .header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+}
+
+.btn-back {
+  background-color: #f0f0f0;
+  color: #333333;
+  border: 1px solid #d0d0d0;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #e0e0e0;
+  border-color: #c0c0c0;
+}
+
+/* Komunikaty */
+.alert {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 12px 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.alert-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.alert-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  margin-left: 10px;
+}
+
+/* Główna zawartość */
+.admin-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Sekcje */
+.admin-section {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.admin-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Formularz kategorii */
+.category-form {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #357abd;
+}
+
+/* Lista kategorii */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-item {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: background-color 0.2s;
+}
+
+.category-item:hover {
+  background-color: #f9f9f9;
+}
+
+.category-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0 0 6px 0;
+}
+
+.category-info p {
+  font-size: 14px;
+  color: #666666;
+  margin: 0 0 8px 0;
+}
+
+.category-stats {
+  font-size: 12px;
+  color: #999999;
+}
+
+.category-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-cancel {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+.btn-edit:hover {
+  background-color: #ffe0b2;
+}
+
+.btn-delete {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.btn-delete:hover {
+  background-color: #ffcdd2;
+}
+
+.btn-save {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.btn-save:hover {
+  background-color: #c8e6c9;
+}
+
+.btn-cancel {
+  background-color: #f0f0f0;
+  color: #666666;
+  border: 1px solid #d0d0d0;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+}
+
+/* Edycja kategorii */
+.category-edit {
+  width: 100%;
+}
+
+.category-edit input,
+.category-edit textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Filtry użytkowników */
+.user-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  background-color: transparent;
+  border: 1px solid #d0d0d0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666666;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background-color: #f0f0f0;
+  color: #333333;
+}
+
+.filter-btn.active {
+  background-color: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
+
+/* Tabela użytkowników */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table thead {
+  background-color: #f5f5f5;
+}
+
+.user-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666666;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.user-table td {
+  padding: 12px;
+  font-size: 14px;
+  color: #333333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.role-badge.user {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+/* Stan pusty */
+.empty-state {
+  text-align: center;
+  color: #999999;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+/* Responsywność */
+@media (max-width: 1024px) {
+  .admin-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-header .header-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .user-table {
+    font-size: 12px;
+  }
+
+  .user-table th,
+  .user-table td {
+    padding: 8px;
+  }
+}

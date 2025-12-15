@@ -11,6 +11,7 @@ import type { Watek, Kategoria } from '../services/serwisForumService';
 import type { UzytkownikLista } from '../services/serwisUzytkownikowService';
 import Navbar from './Navbar';
 import './StronaGlowna.css';
+import forumBanner from '../assets/forumdyskusyjne.png';
 
 const StronaGlowna: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const StronaGlowna: React.FC = () => {
   const [ladowanie, ustawLadowanie] = useState<boolean>(true);
   const [blad, ustawBlad] = useState<string | null>(null);
   const [wybranaKategoria, ustawWybranaKategoria] = useState<number | null>(null);
+  const [sortowanie, ustawSortowanie] = useState<'najnowsze' | 'najstarsze' | 'najpopularniejsze'>('najnowsze');
 
   /**
    * Callback po dodaniu nowego posta - odśwież listę.
@@ -83,16 +85,39 @@ const StronaGlowna: React.FC = () => {
   }, [uzytkownik]); // Wykonaj ponownie gdy zmieni się użytkownik
 
   /**
-   * Filtrowanie wątków po wybranej kategorii.
+   * Filtrowanie i sortowanie wątków.
    */
-  const filtrowaneWatki = wybranaKategoria
-    ? watki.filter(watek => watek.kategoria.id === wybranaKategoria)
-    : watki;
+  const filtrowaneWatki = (() => {
+    // Najpierw filtrujemy po kategorii
+    let wynik = wybranaKategoria
+      ? watki.filter(watek => watek.kategoria.id === wybranaKategoria)
+      : [...watki];
+
+    // Następnie sortujemy
+    switch (sortowanie) {
+      case 'najnowsze':
+        wynik.sort((a, b) => new Date(b.data_utworzenia).getTime() - new Date(a.data_utworzenia).getTime());
+        break;
+      case 'najstarsze':
+        wynik.sort((a, b) => new Date(a.data_utworzenia).getTime() - new Date(b.data_utworzenia).getTime());
+        break;
+      case 'najpopularniejsze':
+        wynik.sort((a, b) => (b.suma_glosow || 0) - (a.suma_glosow || 0));
+        break;
+    }
+
+    return wynik;
+  })();
 
   return (
     <div className="forum-container">
       {/* Navbar wspólny dla całej aplikacji */}
       <Navbar onPostAdded={handlePostAdded} />
+
+      {/* Baner forum */}
+      <div className="forum-banner">
+        <img src={forumBanner} alt="Forum Dyskusyjne dla Studentów" />
+      </div>
 
       {/* Main content - 3 kolumny */}
       <div className="forum-content">
@@ -133,7 +158,11 @@ const StronaGlowna: React.FC = () => {
         <main className="forum-main">
           <div className="forum-controls">
             {/* Sortowanie - lewa strona */}
-            <select className="sort-select">
+            <select
+              className="sort-select"
+              value={sortowanie}
+              onChange={(e) => ustawSortowanie(e.target.value as 'najnowsze' | 'najstarsze' | 'najpopularniejsze')}
+            >
               <option value="najnowsze">Najnowsze</option>
               <option value="najstarsze">Najstarsze</option>
               <option value="najpopularniejsze">Najpopularniejsze</option>

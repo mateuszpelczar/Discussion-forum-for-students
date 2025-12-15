@@ -21,6 +21,25 @@ export interface Profil {
 export interface UzytkownikLista extends Autor {
     date_joined: string;
     profil: Profil;
+    is_active: boolean;
+    first_name?: string;
+    last_name?: string;
+}
+
+/**
+ * Dane do aktualizacji użytkownika przez admina.
+ */
+export interface AdminAktualizacjaUzytkownika {
+    username?: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    rola?: 'ADMIN' | 'USER';
+    is_active?: boolean;
+    // Pola profilu
+    wydzial?: string;
+    rok_studiow?: number | null;
+    opis?: string;
 }
 
 /**
@@ -58,7 +77,43 @@ class SerwisUzytkownikowService {
         const odpowiedz = await axiosInstance.get<UzytkownikLista>(`/uzytkownicy/${id}/`);
         return odpowiedz.data;
     }
+
+    /**
+     * Aktualizuje dane użytkownika (tylko admin).
+     * @param id - ID użytkownika
+     * @param dane - Dane do aktualizacji
+     */
+    async aktualizujUzytkownika(id: number, dane: AdminAktualizacjaUzytkownika): Promise<UzytkownikLista> {
+        const odpowiedz = await axiosInstance.patch<{ wiadomosc: string; uzytkownik: UzytkownikLista }>(
+            `/admin/uzytkownicy/${id}/`,
+            dane
+        );
+        return odpowiedz.data.uzytkownik;
+    }
+
+    /**
+     * Blokuje użytkownika (tylko admin).
+     * @param id - ID użytkownika
+     */
+    async zablokujUzytkownika(id: number): Promise<UzytkownikLista> {
+        const odpowiedz = await axiosInstance.post<{ wiadomosc: string; uzytkownik: UzytkownikLista }>(
+            `/admin/uzytkownicy/${id}/zablokuj/`
+        );
+        return odpowiedz.data.uzytkownik;
+    }
+
+    /**
+     * Odblokowuje użytkownika (tylko admin).
+     * @param id - ID użytkownika
+     */
+    async odblokujUzytkownika(id: number): Promise<UzytkownikLista> {
+        const odpowiedz = await axiosInstance.post<{ wiadomosc: string; uzytkownik: UzytkownikLista }>(
+            `/admin/uzytkownicy/${id}/odblokuj/`
+        );
+        return odpowiedz.data.uzytkownik;
+    }
 }
 
 // Eksport instancji serwisu (Singleton pattern - YAGNI)
 export default new SerwisUzytkownikowService();
+

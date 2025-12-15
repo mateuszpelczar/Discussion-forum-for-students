@@ -58,6 +58,7 @@ class UzytkownikSerializer(serializers.ModelSerializer):
             'last_name',
             'rola', 
             'date_joined',
+            'is_active',
             'profil'
         ]
         read_only_fields = ['id', 'date_joined']
@@ -246,3 +247,82 @@ class ZmianaHaslaSerializer(serializers.Serializer):
         user.set_password(self.validated_data['nowe_haslo'])
         user.save()
         return user
+
+
+class AdminAktualizacjaUzytkownikaSerializer(serializers.ModelSerializer):
+    """
+    Serializer do aktualizacji użytkownika przez administratora.
+    Umożliwia zmianę danych, roli, statusu aktywności oraz profilu.
+    """
+    # Pola profilu jako płaskie pola (nie zagnieżdżone)
+    wydzial = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    rok_studiow = serializers.IntegerField(required=False, allow_null=True)
+    opis = serializers.CharField(required=False, allow_blank=True)
+    
+    class Meta:
+        model = Uzytkownik
+        fields = [
+            'id',
+            'username', 
+            'email', 
+            'first_name', 
+            'last_name',
+            'rola',
+            'is_active',
+            # Pola profilu
+            'wydzial',
+            'rok_studiow',
+            'opis'
+        ]
+        read_only_fields = ['id']
+    
+    def to_representation(self, instance):
+        """Dodaj pola profilu do reprezentacji."""
+        ret = super().to_representation(instance)
+        if hasattr(instance, 'profil'):
+            ret['wydzial'] = instance.profil.wydzial or ''
+            ret['rok_studiow'] = instance.profil.rok_studiow
+            ret['opis'] = instance.profil.opis or ''
+        return ret
+    
+    def validate_email(self, value):
+        """Walidacja unikalności email (z wykluczeniem aktualnego użytkownika)."""
+        uzytkownik = self.instance
+        if Uzytkownik.objects.filter(email=value).exclude(pk=uzytkownik.pk).exists():
+            raise serializers.ValidationError(
+                "Użytkownik z tym adresem email już istnieje."
+            )
+        return value
+    
+    def validate_username(self, value):
+        """Walidacja unikalności username (z wykluczeniem aktualnego użytkownika)."""
+        uzytkownik = self.instance
+        if Uzytkownik.objects.filter(username=value).exclude(pk=uzytkownik.pk).exists():
+            raise serializers.ValidationError(
+                "Użytkownik z tą nazwą już istnieje."
+            )
+        return value
+    
+    def update(self, instance, validated_data):
+        """Aktualizacja użytkownika i jego profilu."""
+        # Wyciągnij pola profilu
+        wydzial = validated_data.pop('wydzial', None)
+        rok_studiow = validated_data.pop('rok_studiow', None)
+        opis = validated_data.pop('opis', None)
+        
+        # Aktualizuj użytkownika
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        
+        # Aktualizuj profil jeśli podano pola
+        if hasattr(instance, 'profil'):
+            if wydzial is not None:
+                instance.profil.wydzial = wydzial
+            if rok_studiow is not None:
+                instance.profil.rok_studiow = rok_studiow
+            if opis is not None:
+                instance.profil.opis = opis
+            instance.profil.save()
+        
+        return instance

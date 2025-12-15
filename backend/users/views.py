@@ -16,8 +16,10 @@ from .serializers import (
     UzytkownikSerializer,
     RejestrSerializer,
     AktualizacjaProfiluSerializer,
-    ZmianaHaslaSerializer
+    ZmianaHaslaSerializer,
+    AdminAktualizacjaUzytkownikaSerializer
 )
+from forum.permissions import JestAdministratorem
 
 
 class AutoryzacjaController:
@@ -219,3 +221,84 @@ class UzytkownikController:
         queryset = Uzytkownik.objects.all().select_related('profil')
         serializer_class = UzytkownikSerializer
         permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class AdminController:
+    """
+    Kontroler administracyjny - operacje zarządzania użytkownikami.
+    Tylko dla użytkowników z rolą ADMIN.
+    """
+    
+    class AktualizujUzytkownika(generics.UpdateAPIView):
+        """
+        Aktualizacja danych użytkownika przez administratora.
+        Pozwala na zmianę: username, email, first_name, last_name, rola, is_active.
+        """
+        queryset = Uzytkownik.objects.all().select_related('profil')
+        serializer_class = AdminAktualizacjaUzytkownikaSerializer
+        permission_classes = [permissions.IsAuthenticated, JestAdministratorem]
+        
+        def update(self, request, *args, **kwargs):
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            
+            # Zwróć pełne dane użytkownika
+            return Response({
+                'wiadomosc': 'Dane użytkownika zostały zaktualizowane.',
+                'uzytkownik': UzytkownikSerializer(instance).data
+            }, status=status.HTTP_200_OK)
+    
+    
+    class ZablokujUzytkownika(APIView):
+        """
+        Blokowanie użytkownika (ustawienie is_active=False).
+        """
+        permission_classes = [permissions.IsAuthenticated, JestAdministratorem]
+        
+        def post(self, request, pk):
+            try:
+                uzytkownik = Uzytkownik.objects.get(pk=pk)
+            except Uzytkownik.DoesNotExist:
+                return Response({
+                    'error': 'Użytkownik nie został znaleziony.'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            # Nie można zablokować samego siebie
+            if uzytkownik == request.user:
+                return Response({
+                    'error': 'Nie możesz zablokować swojego konta.'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            uzytkownik.is_active = False
+            uzytkownik.save()
+            
+            return Response({
+                'wiadomosc': f'Użytkownik {uzytkownik.username} został zablokowany.',
+                'uzytkownik': UzytkownikSerializer(uzytkownik).data
+            }, status=status.HTTP_200_OK)
+    
+    
+    class OdblokujUzytkownika(APIView):
+        """
+        Odblokowywanie użytkownika (ustawienie is_active=True).
+        """
+        permission_classes = [permissions.IsAuthenticated, JestAdministratorem]
+        
+        def post(self, request, pk):
+            try:
+                uzytkownik = Uzytkownik.objects.get(pk=pk)
+            except Uzytkownik.DoesNotExist:
+                return Response({
+                    'error': 'Użytkownik nie został znaleziony.'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            uzytkownik.is_active = True
+            uzytkownik.save()
+            
+            return Response({
+                'wiadomosc': f'Użytkownik {uzytkownik.username} został odblokowany.',
+                'uzytkownik': UzytkownikSerializer(uzytkownik).data
+            }, status=status.HTTP_200_OK)

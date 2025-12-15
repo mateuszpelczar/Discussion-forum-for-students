@@ -64,6 +64,7 @@ const StronaGlowna: React.FC = () => {
             rola: uzytkownik.rola,
             first_name: uzytkownik.first_name,
             last_name: uzytkownik.last_name,
+            is_active: true,
             date_joined: new Date().toISOString(),
             profil: {
               avatar: undefined,

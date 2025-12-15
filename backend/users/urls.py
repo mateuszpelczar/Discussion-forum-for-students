@@ -4,7 +4,7 @@ Zgodnie z konwencją RESTful API.
 """
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import AutoryzacjaController, ProfilController, UzytkownikController
+from .views import AutoryzacjaController, ProfilController, UzytkownikController, AdminController
 
 app_name = 'users'
 
@@ -47,4 +47,18 @@ urlpatterns = [
     path('uzytkownicy/<int:pk>/', 
          UzytkownikController.SzczegolyUzytkownika.as_view(), 
          name='szczegoly_uzytkownika'),
+    
+    # Admin - zarządzanie użytkownikami
+    path('admin/uzytkownicy/<int:pk>/', 
+         AdminController.AktualizujUzytkownika.as_view(), 
+         name='admin_aktualizuj_uzytkownika'),
+    
+    path('admin/uzytkownicy/<int:pk>/zablokuj/', 
+         AdminController.ZablokujUzytkownika.as_view(), 
+         name='admin_zablokuj_uzytkownika'),
+    
+    path('admin/uzytkownicy/<int:pk>/odblokuj/', 
+         AdminController.OdblokujUzytkownika.as_view(), 
+         name='admin_odblokuj_uzytkownika'),
 ]
+

@@ -421,18 +421,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   min-width: 60px;
   align-self: center;
   background: #f0f0f0;
-  padding: 12px 8px;
+  padding: 8px;
   border-radius: 8px;
 }
 
-.vote-count {
-  font-size: 22px;
-  font-weight: 700;
+.vote-arrow {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+  padding: 2px 8px;
+  line-height: 1;
+}
+
+.vote-arrow:hover {
   color: #4a90e2;
+}
+
+.vote-arrow.vote-up:hover {
+  color: #4caf50;
+}
+
+.vote-arrow.vote-down:hover {
+  color: #f44336;
+}
+
+.vote-count {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  padding: 2px 0;
 }
 
 .vote-label {

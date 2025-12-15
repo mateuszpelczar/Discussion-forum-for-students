@@ -71,14 +71,23 @@ class WatekListSerializer(serializers.ModelSerializer):
         write_only=True
     )
     liczba_postow = serializers.IntegerField(read_only=True, required=False)
+    suma_glosow = serializers.SerializerMethodField()
     
     class Meta:
         model = Watek
         fields = [
             'id', 'tytul', 'tresc', 'autor', 'kategoria', 'kategoria_id',
-            'data_utworzenia', 'data_aktualizacji', 'zablokowany', 'liczba_postow'
+            'data_utworzenia', 'data_aktualizacji', 'zablokowany', 'liczba_postow', 'suma_glosow'
         ]
         read_only_fields = ['autor', 'data_utworzenia', 'data_aktualizacji', 'zablokowany']
+    
+    def get_suma_glosow(self, obj):
+        """Sumuje wszystkie głosy z postów w tym wątku."""
+        from django.db.models import Sum, Count
+        wynik = obj.posty.aggregate(
+            suma=Sum('glosy__wartosc')
+        )
+        return wynik['suma'] or 0
 
 
 class WatekDetailSerializer(serializers.ModelSerializer):

@@ -41,6 +41,7 @@ export interface Watek {
   data_aktualizacji: string;
   zablokowany: boolean;
   liczba_postow?: number;
+  suma_glosow?: number;
 }
 
 /**

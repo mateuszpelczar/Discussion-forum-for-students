@@ -166,10 +166,16 @@ const StronaGlowna: React.FC = () => {
                   onClick={() => navigate(`/watek/${watek.id}`)}
                   style={{ cursor: 'pointer' }}
                 >
-                  {/* Głosy - lewa strona */}
+                  {/* Statystyki - lewa strona */}
                   <div className="post-votes">
-                    <span className="vote-count">{watek.liczba_postow || 0}</span>
-                    <span className="vote-label">odpowiedzi</span>
+                    <div style={{ marginBottom: '8px' }}>
+                      <span className="vote-count">{watek.suma_glosow || 0}</span>
+                      <span className="vote-label">głosów</span>
+                    </div>
+                    <div>
+                      <span className="vote-count">{watek.liczba_postow || 0}</span>
+                      <span className="vote-label">odpowiedzi</span>
+                    </div>
                   </div>
 
                   {/* Treść posta */}

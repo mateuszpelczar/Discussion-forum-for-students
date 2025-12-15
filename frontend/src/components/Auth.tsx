@@ -14,15 +14,10 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { logowanie, rejestracja, zalogowany } = useAuth();
-<<<<<<< HEAD
 
   const [activeTab, setActiveTab] = useState<TabType>(
     location.pathname === '/rejestracja' ? 'rejestracja' : 'logowanie'
   );
-=======
-  
-  const [activeTab, setActiveTab] = useState<TabType>('logowanie');
->>>>>>> 5de6655ef226c05e1386e9469b4f66c94e213257
   const [ladowanie, setLadowanie] = useState(false);
   const [blad, setBlad] = useState<string>('');
 

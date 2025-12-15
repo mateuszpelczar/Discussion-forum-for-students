@@ -245,7 +245,7 @@ class LogowanieAPITest(APITestCase):
         Test integracyjny: Logowanie z poprawnymi danymi.
         """
         dane = {
-            'username': 'logintest',
+            'email': 'logintest@example.com',
             'password': 'TestPassword123!'
         }
         
@@ -268,7 +268,7 @@ class LogowanieAPITest(APITestCase):
         Test integracyjny: Logowanie z niepoprawnym hasłem.
         """
         dane = {
-            'username': 'logintest',
+            'email': 'logintest@example.com',
             'password': 'WrongPassword123!'
         }
         
@@ -282,7 +282,7 @@ class LogowanieAPITest(APITestCase):
         Test integracyjny: Logowanie nieistniejącego użytkownika.
         """
         dane = {
-            'username': 'nonexistent',
+            'email': 'nonexistent@example.com',
             'password': 'SomePassword123!'
         }
         

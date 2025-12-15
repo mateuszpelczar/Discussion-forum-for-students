@@ -1,76 +1,100 @@
-/* Stylowanie komponentów autoryzacji */
+/* Stylowanie komponentów autoryzacji - nowoczesny design */
 
 .auth-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f5f5;
+  background-image: url('../assets/logowanie.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #1a1a2e;
   padding: 20px;
+  position: relative;
+}
+
+/* Lekka nakładka na tło */
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .auth-card {
-  background: white;
-  border-radius: 8px;
-  padding: 40px;
-  max-width: 900px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 24px;
+  padding: 50px 40px;
+  max-width: 450px;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .auth-card h1 {
-  margin: 0 0 10px 0;
-  color: #1a1a1a;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: left;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.5px;
 }
 
 .auth-subtitle {
-  color: #666;
-  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
   margin: 0 0 30px 0;
-  font-size: 14px;
+  font-size: 15px;
 }
 
+/* Taby logowanie/rejestracja */
 .auth-tabs {
   display: flex;
-  gap: 10px;
+  gap: 0;
   margin-bottom: 30px;
-  border-bottom: 2px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 4px;
+  border: none;
 }
 
 .tab-button {
+  flex: 1;
   background: transparent;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 14px;
-  font-weight: 500;
-  color: #666;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  transition: all 0.2s;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  margin: 0;
 }
 
 .tab-button.active {
-  color: #1a1a1a;
-  background-color: #1a1a1a;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-radius: 20px;
-  border-bottom: none;
-  margin-bottom: 0;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .tab-button:hover:not(.active) {
-  color: #1a1a1a;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
+/* Formularz */
 .auth-form-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
+  display: block;
 }
 
 .form-section {
@@ -80,47 +104,52 @@
 }
 
 .form-section h2 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
+  color: #ffffff;
+  margin: 0 0 5px 0;
+  text-align: center;
 }
 
 .auth-form-single {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-group label {
-  color: #1a1a1a;
-  font-weight: 500;
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-group input {
-  padding: 10px 12px;
-  border: 1px solid #d0d0d0;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: border-color 0.3s;
-  background-color: #fff;
-  color: #000 !important;
+  padding: 14px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
 }
 
 .form-group input::placeholder {
-  color: #999;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .form-group input.error {
@@ -134,63 +163,90 @@
 }
 
 .error-text {
-  color: #e74c3c;
+  color: #ff6b6b;
   font-size: 12px;
   margin-top: -4px;
 }
 
 .error-message {
-  background-color: #fee;
-  color: #c33;
-  padding: 12px 16px;
-  border-radius: 6px;
+  background: rgba(231, 76, 60, 0.2);
+  color: #ff6b6b;
+  padding: 14px 18px;
+  border-radius: 12px;
   font-size: 14px;
   margin-bottom: 20px;
-  border-left: 4px solid #e74c3c;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid rgba(231, 76, 60, 0.3);
 }
 
 .btn-primary {
-  background: #4a90e2;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 10px 24px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
   margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #357abd;
+  background: linear-gradient(135deg, #7b8ef8 0%, #8b5fbf 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .auth-link {
   text-align: center;
-  margin-top: 20px;
-  color: #666;
+  margin-top: 25px;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
 }
 
 .auth-link a {
-  color: #4a90e2;
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .auth-link a:hover {
   text-decoration: underline;
 }
 
+/* Baner - ukryty gdy tło */
+.auth-banner {
+  display: none;
+}
+
+/* Responsywność */
 @media (max-width: 768px) {
+  .auth-container {
+    background-size: 80%;
+  }
+
   .auth-card {
-    padding: 30px 20px;
+    padding: 35px 25px;
+    border-radius: 16px;
+  }
+
+  .auth-card h1 {
+    font-size: 26px;
   }
 
   .auth-form-wrapper {

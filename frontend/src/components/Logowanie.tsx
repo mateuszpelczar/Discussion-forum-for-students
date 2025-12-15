@@ -7,16 +7,17 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import type { UzytkownikLogowanie } from '../services/serwisAutoryzacji';
 import './Auth.css';
+import logowanieBanner from '../assets/logowanie.png';
 
 const Logowanie: React.FC = () => {
   const navigate = useNavigate();
   const { logowanie } = useAuth();
-  
+
   const [formData, setFormData] = useState<UzytkownikLogowanie>({
     email: '',
     password: '',
   });
-  
+
   const [blad, setBlad] = useState<string>('');
   const [ladowanie, setLadowanie] = useState(false);
 
@@ -52,6 +53,9 @@ const Logowanie: React.FC = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <div className="auth-banner">
+          <img src={logowanieBanner} alt="Logowanie" />
+        </div>
         <h1>Logowanie</h1>
         <p className="auth-subtitle">Forum dyskusyjne dla studentów</p>
 
@@ -87,8 +91,8 @@ const Logowanie: React.FC = () => {
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="btn-primary"
             disabled={ladowanie}
           >

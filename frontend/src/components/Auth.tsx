@@ -14,26 +14,26 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { logowanie, rejestracja, zalogowany } = useAuth();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>(
     location.pathname === '/rejestracja' ? 'rejestracja' : 'logowanie'
   );
   const [ladowanie, setLadowanie] = useState(false);
   const [blad, setBlad] = useState<string>('');
-  
+
   // Przekieruj jeśli już zalogowany
   useEffect(() => {
     if (zalogowany) {
       navigate('/', { replace: true });
     }
   }, [zalogowany, navigate]);
-  
+
   // Dane formularza logowania
   const [loginData, setLoginData] = useState<UzytkownikLogowanie>({
     email: '',
     password: '',
   });
-  
+
   // Dane formularza rejestracji
   const [registerData, setRegisterData] = useState<UzytkownikRejestracja>({
     username: '',
@@ -112,6 +112,7 @@ const Auth: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h1>Forum studenckie</h1>
+        <p className="auth-subtitle">Dołącz do społeczności studentów</p>
 
         {/* Taby */}
         <div className="auth-tabs">
@@ -172,8 +173,8 @@ const Auth: React.FC = () => {
                   />
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn-primary"
                   disabled={ladowanie}
                 >
@@ -226,8 +227,8 @@ const Auth: React.FC = () => {
                   />
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn-primary"
                   disabled={ladowanie}
                 >

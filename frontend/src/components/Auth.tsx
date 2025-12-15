@@ -15,9 +15,7 @@ const Auth: React.FC = () => {
   const location = useLocation();
   const { logowanie, rejestracja, zalogowany } = useAuth();
   
-  const [activeTab, setActiveTab] = useState<TabType>(
-    location.pathname === '/rejestracja' ? 'rejestracja' : 'logowanie'
-  );
+  const [activeTab, setActiveTab] = useState<TabType>('logowanie');
   const [ladowanie, setLadowanie] = useState(false);
   const [blad, setBlad] = useState<string>('');
   
@@ -40,8 +38,6 @@ const Auth: React.FC = () => {
     email: '',
     password: '',
     password2: '',
-    first_name: '',
-    last_name: '',
   });
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,7 +187,20 @@ const Auth: React.FC = () => {
               <h2>Rejestracja</h2>
               <form onSubmit={handleRegisterSubmit} className="auth-form-single">
                 <div className="form-group">
-                  <label htmlFor="register-email">E-mail</label>
+                  <label htmlFor="register-username">Nazwa użytkownika *</label>
+                  <input
+                    type="text"
+                    id="register-username"
+                    name="username"
+                    value={registerData.username}
+                    onChange={handleRegisterChange}
+                    required
+                    placeholder="np. jan_kowalski"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="register-email">E-mail *</label>
                   <input
                     type="email"
                     id="register-email"
@@ -199,11 +208,12 @@ const Auth: React.FC = () => {
                     value={registerData.email}
                     onChange={handleRegisterChange}
                     required
+                    placeholder="email@example.com"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="register-password">Hasło</label>
+                  <label htmlFor="register-password">Hasło *</label>
                   <input
                     type="password"
                     id="register-password"
@@ -211,11 +221,12 @@ const Auth: React.FC = () => {
                     value={registerData.password}
                     onChange={handleRegisterChange}
                     required
+                    placeholder="Min. 8 znaków"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="register-password2">Powtórz hasło</label>
+                  <label htmlFor="register-password2">Powtórz hasło *</label>
                   <input
                     type="password"
                     id="register-password2"

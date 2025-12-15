@@ -44,8 +44,7 @@ function App() {
 
           {/* Publiczne trasy */}
           <Route path="/logowanie" element={<Auth />} />
-          <Route path="/rejestracja" element={<Auth />} />
-
+          
           {/* Przekierowanie nieznanych ścieżek */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

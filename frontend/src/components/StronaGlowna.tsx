@@ -3,20 +3,18 @@
  * Wyświetla listę wątków/postów (według makiety).
  * Zgodnie z zasadami SOLID i Clean Code.
  */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import serwisForumService from '../services/serwisForumService';
 import type { Watek, Kategoria } from '../services/serwisForumService';
 import type { UzytkownikLista } from '../services/serwisUzytkownikowService';
-import ZarzadzanieKategoriami from './ZarzadzanieKategoriami';
-import ZarzadzanieUzytkownikami from './ZarzadzanieUzytkownikami';
-import DodajPost from './DodajPost';
+import Navbar from './Navbar';
 import './StronaGlowna.css';
 
 const StronaGlowna: React.FC = () => {
   const navigate = useNavigate();
-  const { uzytkownik, wylogowanie } = useAuth();
+  const { uzytkownik } = useAuth();
 
   // Stan komponentu (KISS - proste zarządzanie stanem)
   const [watki, ustawWatki] = useState<Watek[]>([]);
@@ -26,33 +24,12 @@ const StronaGlowna: React.FC = () => {
   const [blad, ustawBlad] = useState<string | null>(null);
   const [wybranaKategoria, ustawWybranaKategoria] = useState<number | null>(null);
 
-  // Stan dla dropdown menu admina
-  const [adminDropdownOpen, setAdminDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Stan dla modali
-  const [pokazModalKategorie, setPokazModalKategorie] = useState(false);
-  const [pokazModalUzytkownicy, setPokazModalUzytkownicy] = useState(false);
-  const [pokazModalDodajPost, setPokazModalDodajPost] = useState(false);
-
   /**
-   * Funkcja pomocnicza do formatowania daty (DRY - reużywalna).
-   * Wyświetla czas względny (np. "2 godziny temu").
+   * Callback po dodaniu nowego posta - odśwież listę.
    */
-  const formatujDate = (dataString: string): string => {
-    const data = new Date(dataString);
-    const teraz = new Date();
-    const roznicaMs = teraz.getTime() - data.getTime();
-    const roznicaMin = Math.floor(roznicaMs / 60000);
-    const roznicaGodz = Math.floor(roznicaMin / 60);
-    const roznicaDni = Math.floor(roznicaGodz / 24);
-
-    if (roznicaMin < 1) return 'przed chwilą';
-    if (roznicaMin < 60) return `${roznicaMin} min temu`;
-    if (roznicaGodz < 24) return `${roznicaGodz} godz. temu`;
-    if (roznicaDni < 7) return `${roznicaDni} dni temu`;
-
-    return data.toLocaleDateString('pl-PL');
+  const handlePostAdded = async () => {
+    const daneWatkow = await serwisForumService.pobierzWatki();
+    ustawWatki(daneWatkow);
   };
 
   /**
@@ -112,101 +89,10 @@ const StronaGlowna: React.FC = () => {
     ? watki.filter(watek => watek.kategoria.id === wybranaKategoria)
     : watki;
 
-  /**
-   * Zamknięcie dropdown przy kliknięciu poza nim.
-   */
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setAdminDropdownOpen(false);
-      }
-    };
-
-    if (adminDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [adminDropdownOpen]);
-
-  const handleWylogowanie = async () => {
-    try {
-      await wylogowanie();
-      navigate('/logowanie');
-    } catch (error) {
-      console.error('Błąd wylogowania:', error);
-    }
-  };
-
   return (
     <div className="forum-container">
-      {/* Navbar */}
-      <header className="forum-header">
-        <div className="header-content">
-          <h1>Forum studenckie</h1>
-
-          {/* Nawigacja główna */}
-          <nav className="main-nav">
-            <button className="nav-btn active">Strona główna</button>
-            <button
-              className="nav-btn"
-              onClick={() => setPokazModalDodajPost(true)}
-            >
-              Dodaj post
-            </button>
-            <button className="nav-btn">Mój profil</button>
-          </nav>
-
-          <div className="header-actions">
-            <span className="username">
-              Zalogowano jako: <strong>{uzytkownik?.username}</strong>
-              {uzytkownik?.rola === 'ADMIN' && (
-                <span className="badge-admin">ADMIN</span>
-              )}
-            </span>
-
-            {/* Dropdown menu dla admina */}
-            {uzytkownik?.rola === 'ADMIN' && (
-              <div className="admin-dropdown" ref={dropdownRef}>
-                <button
-                  onClick={() => setAdminDropdownOpen(!adminDropdownOpen)}
-                  className="btn-admin-dropdown"
-                >
-                  Admin ▼
-                </button>
-                {adminDropdownOpen && (
-                  <div className="dropdown-menu">
-                    <button
-                      className="dropdown-item"
-                      onClick={() => {
-                        setPokazModalKategorie(true);
-                        setAdminDropdownOpen(false);
-                      }}
-                    >
-                      Zarządzanie kategoriami
-                    </button>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => {
-                        setPokazModalUzytkownicy(true);
-                        setAdminDropdownOpen(false);
-                      }}
-                    >
-                      Zarządzanie użytkownikami
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <button onClick={handleWylogowanie} className="btn-logout">
-              Wyloguj
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Navbar wspólny dla całej aplikacji */}
+      <Navbar onPostAdded={handlePostAdded} />
 
       {/* Main content - 3 kolumny */}
       <div className="forum-content">
@@ -253,13 +139,7 @@ const StronaGlowna: React.FC = () => {
               <option value="najpopularniejsze">Najpopularniejsze</option>
             </select>
 
-            {/* Przycisk - prawa strona */}
-            <button
-              className="btn-new-post"
-              onClick={() => setPokazModalDodajPost(true)}
-            >
-              Nowy post
-            </button>
+            {/* Przycisk - prawa strona - usunięty, przeniósł się do Navbar */}
           </div>
 
           <div className="posts-list">
@@ -280,12 +160,16 @@ const StronaGlowna: React.FC = () => {
             {/* Lista wątków */}
             {!ladowanie && !blad && filtrowaneWatki.length > 0 && (
               filtrowaneWatki.map((watek) => (
-                <div key={watek.id} className="post-item">
+                <div
+                  key={watek.id}
+                  className="post-item"
+                  onClick={() => navigate(`/watek/${watek.id}`)}
+                  style={{ cursor: 'pointer' }}
+                >
                   {/* Głosy - lewa strona */}
                   <div className="post-votes">
-                    <button className="vote-btn vote-up">▲</button>
-                    <div className="vote-count">{watek.liczba_postow || 0}</div>
-                    <button className="vote-btn vote-down">▼</button>
+                    <span className="vote-count">{watek.liczba_postow || 0}</span>
+                    <span className="vote-label">odpowiedzi</span>
                   </div>
 
                   {/* Treść posta */}
@@ -343,24 +227,6 @@ const StronaGlowna: React.FC = () => {
           </ul>
         </aside>
       </div>
-
-      {/* Modale zarządzania */}
-      <ZarzadzanieKategoriami
-        isOpen={pokazModalKategorie}
-        onClose={() => setPokazModalKategorie(false)}
-      />
-      <ZarzadzanieUzytkownikami
-        isOpen={pokazModalUzytkownicy}
-        onClose={() => setPokazModalUzytkownicy(false)}
-      />
-      <DodajPost
-        isOpen={pokazModalDodajPost}
-        onClose={() => setPokazModalDodajPost(false)}
-        onPostAdded={() => {
-          // Odśwież listę wątków po dodaniu nowego
-          serwisForumService.pobierzWatki().then(dane => ustawWatki(dane));
-        }}
-      />
     </div>
   );
 };

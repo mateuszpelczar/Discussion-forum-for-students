@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import ChronionaTrasa from './components/ChronionaTrasa';
 import StronaGlowna from './components/StronaGlowna';
+import SzczegolyWatku from './components/SzczegolyWatku';
+import Profil from './components/Profil';
 import Auth from './components/Auth';
 import './App.css';
 
@@ -20,6 +22,22 @@ function App() {
             element={
               <ChronionaTrasa>
                 <StronaGlowna />
+              </ChronionaTrasa>
+            }
+          />
+          <Route
+            path="/watek/:id"
+            element={
+              <ChronionaTrasa>
+                <SzczegolyWatku />
+              </ChronionaTrasa>
+            }
+          />
+          <Route
+            path="/profil"
+            element={
+              <ChronionaTrasa>
+                <Profil />
               </ChronionaTrasa>
             }
           />

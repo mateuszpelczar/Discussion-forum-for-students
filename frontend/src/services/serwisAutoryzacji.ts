@@ -23,6 +23,9 @@ export interface Profil {
   wydzial?: string;
   rok_studiow?: number;
   opis?: string;
+  liczba_watkow?: number;
+  liczba_postow?: number;
+  liczba_glosow?: number;
 }
 
 export interface Uzytkownik {

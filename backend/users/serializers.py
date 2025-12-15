@@ -13,15 +13,32 @@ class ProfilSerializer(serializers.ModelSerializer):
     Serializer dla modelu Profil.
     Odpowiada za serializację danych profilu użytkownika.
     """
+    liczba_watkow = serializers.SerializerMethodField()
+    liczba_postow = serializers.SerializerMethodField()
+    liczba_glosow = serializers.SerializerMethodField()
+    
     class Meta:
         model = Profil
-        fields = ['avatar', 'wydzial', 'rok_studiow', 'opis']
+        fields = ['avatar', 'wydzial', 'rok_studiow', 'opis', 'liczba_watkow', 'liczba_postow', 'liczba_glosow']
         extra_kwargs = {
             'avatar': {'required': False},
             'wydzial': {'required': False},
             'rok_studiow': {'required': False},
             'opis': {'required': False},
         }
+    
+    def get_liczba_watkow(self, obj):
+        """Zwraca liczbę wątków utworzonych przez użytkownika."""
+        return obj.uzytkownik.watki.count()
+    
+    def get_liczba_postow(self, obj):
+        """Zwraca liczbę postów (odpowiedzi) napisanych przez użytkownika."""
+        return obj.uzytkownik.posty.count()
+    
+    def get_liczba_glosow(self, obj):
+        """Zwraca liczbę głosów oddanych przez użytkownika."""
+        from forum.models import Glos
+        return Glos.objects.filter(uzytkownik=obj.uzytkownik).count()
 
 
 class UzytkownikSerializer(serializers.ModelSerializer):

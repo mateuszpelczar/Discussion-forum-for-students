@@ -77,7 +77,7 @@ const DodajPost: React.FC<Props> = ({ isOpen, onClose, onPostAdded }) => {
                 || error.response?.data?.tresc?.[0]
                 || error.response?.data?.kategoria_id?.[0]
                 || error.response?.data?.detail
-                || 'Nie udało się dodać posta.';
+                || 'Nie udało się dodać wątku.';
             setBlad(bladWiadomosc);
         } finally {
             setLadowanie(false);
@@ -96,12 +96,12 @@ const DodajPost: React.FC<Props> = ({ isOpen, onClose, onPostAdded }) => {
         <div className="modal-overlay" onClick={handleCancel}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>Makieta GUI – dodawanie posta</h2>
+                    <h2>Makieta GUI – dodawanie wątku</h2>
                     <button onClick={handleCancel} className="modal-close">×</button>
                 </div>
 
                 <div className="modal-body">
-                    <h3>Nowy post</h3>
+                    <h3>Nowy wątek</h3>
 
                     {blad && <div className="error-message">{blad}</div>}
 
@@ -136,10 +136,10 @@ const DodajPost: React.FC<Props> = ({ isOpen, onClose, onPostAdded }) => {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="tresc">Treść posta</label>
+                            <label htmlFor="tresc">Treść wątku</label>
                             <textarea
                                 id="tresc"
-                                placeholder="Wpisz treść posta"
+                                placeholder="Wpisz treść wątku"
                                 value={nowyPost.tresc}
                                 onChange={(e) => setNowyPost({ ...nowyPost, tresc: e.target.value })}
                                 className="form-textarea"
@@ -153,7 +153,7 @@ const DodajPost: React.FC<Props> = ({ isOpen, onClose, onPostAdded }) => {
                                 className="btn-save"
                                 disabled={ladowanie}
                             >
-                                {ladowanie ? 'Dodawanie...' : 'Opublikuj'}
+                                {ladowanie ? 'Dodawanie...' : 'Utwórz wątek'}
                             </button>
                             <button
                                 onClick={handleCancel}

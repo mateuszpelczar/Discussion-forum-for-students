@@ -147,6 +147,31 @@ class SerwisForumService {
     return odpowiedz.data;
   }
 
+  /**
+   * Pobiera listę postów dla wątku.
+   * @param watekId - ID wątku
+   */
+  async pobierzPostyWatku(watekId: number): Promise<Post[]> {
+    const odpowiedz = await axiosInstance.get<any>(`/forum/watki/${watekId}/posty/`);
+    return odpowiedz.data.results || odpowiedz.data;
+  }
+
+  /**
+   * Usuwa post (autor lub admin).
+   * @param postId - ID postu
+   */
+  async usunPost(postId: number): Promise<void> {
+    await axiosInstance.delete(`/forum/posty/${postId}/usun/`);
+  }
+
+  /**
+   * Usuwa wątek (tylko admin).
+   * @param watekId - ID wątku
+   */
+  async usunWatek(watekId: number): Promise<void> {
+    await axiosInstance.delete(`/forum/admin/watki/${watekId}/`);
+  }
+
   // ===== METODY ADMINISTRACYJNE =====
   // Zgodnie z OCP (Open/Closed Principle) - rozszerzamy bez modyfikacji istniejących metod
 

@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-fxn*lu#v3hnv&il*jdxgn+a=_r(b!vf0^k*h3+^zn03i@r^!nx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', '0.0.0.0']
 
 
 # Application definition
@@ -91,6 +91,7 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
+        ssl_require=True
     )
 }
 

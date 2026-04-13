@@ -254,3 +254,11 @@ DEBUG=True
 ```
 
 > For production set `DEBUG=False` and use a strong, unique `SECRET_KEY`.
+
+<img width="1854" height="710" alt="image" src="https://github.com/user-attachments/assets/188bbea1-f212-47ff-b5a6-6553868cc151" />
+<img width="1487" height="821" alt="image" src="https://github.com/user-attachments/assets/d7ffe91f-aab4-4706-ae09-c22364cbfee2" />
+<img width="907" height="627" alt="image" src="https://github.com/user-attachments/assets/9380f5ae-d496-493e-a6eb-9c7ab73802f9" />
+<img width="761" height="796" alt="image" src="https://github.com/user-attachments/assets/3e0eb975-f17e-4b88-9a6b-7aa5d7aaa385" />
+<img width="892" height="486" alt="image" src="https://github.com/user-attachments/assets/930ea919-d554-4fe5-8a7e-1171d364626a" />
+<img width="1096" height="438" alt="image" src="https://github.com/user-attachments/assets/06187155-fe40-4bd2-a36d-f438326984a5" />
+

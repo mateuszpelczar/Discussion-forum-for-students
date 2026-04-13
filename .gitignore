@@ -73,3 +73,6 @@ coverage.xml
 # Misc
 *.bak
 *.tmp
+
+#Claude
+.claude
